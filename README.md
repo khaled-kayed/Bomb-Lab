@@ -10,23 +10,6 @@ You can actually find it here <https://www.youtube.com/watch?v=WxTSOpG6X5M>. So 
 
 So, after phase 1 defused we set a break point at `phase_2` and disassemble it: 
 ```
-                mov     [rsp-8+arg_0], rcx
-                push    rbp
-                push    rdi
-                sub     rsp, 138h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 4Eh ; 'N'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     rcx, [rsp+140h+arg_8]
-                mov     rax, cs:__security_cookie
-                xor     rax, rbp
-                mov     [rbp+120h+var_18], rax
-                lea     rcx, unk_14002600A
-                call    j___CheckForDebuggerJustMyCode
-                lea     rdx, [rbp+120h+var_F8]
-                mov     rcx, [rbp+120h+arg_0]
                 call    j_read_six_numbers
                 mov     eax, 4
                 imul    rax, 0
@@ -58,17 +41,6 @@ loc_7FF76B48210D:                       ; CODE XREF: phase_2+73↑j
 
 loc_7FF76B482130:                       ; CODE XREF: phase_2+99↑j
                 jmp     short loc_7FF76B482105
-loc_7FF76B482132:          ; Esp
-                lea     rcx, [rbp+120h+var_140]
-                lea     rdx, stru_14001BE90 ; Fd
-                call    j__RTC_CheckStackVars
-                mov     rcx, [rbp+120h+var_18]
-                xor     rcx, rbp        ; StackCookie
-                call    j___security_check_cookie
-                lea     rsp, [rbp+118h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `phase_2 disassembly`
 
@@ -146,23 +118,6 @@ And yeah, it works😊
 
 We move the breakpoint to `phase_3` and continue through the Bomb. Disassembling it...
 ```
-                mov     [rsp-8+Buffer], rcx
-                push    rbp
-                push    rdi
-                sub     rsp, 168h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 5Ah ; 'Z'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     rcx, [rsp+170h+arg_8]
-                mov     rax, cs:__security_cookie
-                xor     rax, rbp
-                mov     [rbp+150h+var_18], rax
-                lea     rcx, unk_14002600A
-                call    j___CheckForDebuggerJustMyCode
-                mov     [rbp+150h+var_10C], 0
-                mov     [rbp+150h+var_EC], 0
                 lea     r9, [rbp+150h+var_12C]      ;second input
                 lea     r8, [rbp+150h+var_14C]      ;first input
                 lea     rdx, aDD        ; "%d %d"
@@ -224,17 +179,6 @@ loc_7FF76B48228F:
                 jz      short loc_7FF76B4822A2      ;End phase_3
 loc_7FF76B48229D:
                 call    j_explode_bomb
-loc_7FF76B4822A2:          ; Esp
-                lea     rcx, [rbp+150h+var_170]
-                lea     rdx, stru_14001BF50 ; Fd
-                call    j__RTC_CheckStackVars
-                mov     rcx, [rbp+150h+var_18]
-                xor     rcx, rbp        ; StackCookie
-                call    j___security_check_cookie
-                lea     rsp, [rbp+148h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `phase_3 disassembly`
 
@@ -367,17 +311,6 @@ loc_7FF7B3B823D2:
                 jz      short loc_7FF7B3B82401
 loc_7FF7B3B823FC:
                 call    j_explode_bomb
-loc_7FF7B3B82401:
-                lea     rcx, [rbp+170h+var_190]
-                lea     rdx, stru_14001C020 ; Fd
-                call    j__RTC_CheckStackVars
-                mov     rcx, [rbp+170h+var_18]
-                xor     rcx, rbp        ; StackCookie
-                call    j___security_check_cookie
-                lea     rsp, [rbp+168h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `Phase_4 disassembly`
 
@@ -412,25 +345,6 @@ jz      short loc_7FF7B3B82401      ;end_phase_4
 
 let's disassemble `func4` and see what it does...
 ```
-                mov     [rsp-8+arg_10], r8d
-                mov     [rsp-8+arg_8], edx
-                mov     [rsp-8+arg_0], ecx
-                push    rbp
-                push    rdi
-                sub     rsp, 108h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 42h ; 'B'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     ecx, [rsp+110h+arg_8]
-                lea     rcx, unk_14002600A
-                call    j___CheckForDebuggerJustMyCode
-                mov     eax, [rbp+0F0h+arg_8]
-                mov     ecx, [rbp+0F0h+arg_10]
-                sub     ecx, eax
-                mov     eax, ecx
-                cdq
                 sub     eax, edx
                 sar     eax, 1
                 mov     ecx, [rbp+0F0h+arg_8]
@@ -463,11 +377,6 @@ loc_7FF7B3B81F9A:                       ; CODE XREF: func4+68↑j
 loc_7FF7B3B81FC5:                       ; CODE XREF: func4+93↑j
                 mov     eax, [rbp+0F0h+var_EC]
                 jmp     short loc_7FF7B3B81FC8      ;end_func4
-loc_7FF7B3B81FC8:               
-                lea     rsp, [rbp+0E8h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `func4 disassembly`
 
@@ -482,21 +391,6 @@ And yeah, it works again ^^_^^:
 Like usual put the breakpoint here and contiune through the Bomb. Disassemble `phase_5` gives us a note of what kind of inputs it's waiting for. So, let's see it...
 
 ```
-                mov     [rsp-8+Buffer], rcx
-                push    rbp
-                push    rdi
-                sub     rsp, 1A8h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 6Ah ; 'j'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     rcx, [rsp+1B0h+arg_8]
-                mov     rax, cs:__security_cookie
-                xor     rax, rbp
-                mov     [rbp+190h+var_18], rax
-                lea     rcx, unk_14002600A
-                call    j___CheckForDebuggerJustMyCode
                 lea     r9, [rbp+190h+var_10C]      ;second input
                 lea     r8, [rbp+190h+var_12C]      ;first input
                 lea     rdx, aDD        ; "%d %d"
@@ -538,17 +432,6 @@ loc_7FF61E132524:
                 jz      short loc_7FF61E13253A      ;end_phase_5
 loc_7FF61E132535:
                 call    j_explode_bomb
-loc_7FF61E13253A:
-                lea     rcx, [rbp+190h+var_1B0]
-                lea     rdx, stru_14001C0F0 ; Fd
-                call    j__RTC_CheckStackVars
-                mov     rcx, [rbp+190h+var_18]
-                xor     rcx, rbp        ; StackCookie
-                call    j___security_check_cookie
-                lea     rsp, [rbp+188h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `Phase_5 disassemble`
 
@@ -666,25 +549,6 @@ Great work for us really we got here😊.
 Now to the final phase🫣 in our bomb `phase_6`.  It looks like a bomb really but as usual we're gonna destroy it. At first look at the assembly you might freak out but don't worry we'll break it down into small pieces we can actually deal with...
 
 ```
-                mov     [rsp-8+arg_0], rcx
-                push    rbp
-                push    rdi
-                sub     rsp, 1E8h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 7Ah ; 'z'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     rcx, [rsp+1F0h+arg_8]
-                mov     rax, cs:__security_cookie
-                xor     rax, rbp
-                mov     [rbp+1D0h+var_18], rax
-                lea     rcx, unk_14002600A
-                call    j___CheckForDebuggerJustMyCode
-                lea     rax, node1
-                mov     [rbp+1D0h+var_1C8], rax
-                lea     rdx, [rbp+1D0h+var_188]
-                mov     rcx, [rbp+1D0h+arg_0]
                 call    j_read_six_numbers
                 mov     [rbp+1D0h+var_10C], 0
                 jmp     short loc_7FF7EADD262C
@@ -784,17 +648,6 @@ loc_7FF7EADD27C3:
                 mov     rax, [rax+8]
                 mov     [rbp+1D0h+var_1A8], rax
                 jmp     short loc_7FF7EADD2795
-loc_7FF7EADD27D1:
-                lea     rcx, [rbp+1D0h+var_1F0]
-                lea     rdx, stru_14001C1C0 ; Fd
-                call    j__RTC_CheckStackVars
-                mov     rcx, [rbp+1D0h+var_18]
-                xor     rcx, rbp        ; StackCookie
-                call    j___security_check_cookie
-                lea     rsp, [rbp+1C8h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `pase_6 disassembly`
 
@@ -959,19 +812,6 @@ This phase has two condition to be activated one is really obvious if we disasse
 So, we must enter a string into a phase that took two integers as input and we have 3 options `phase_3`, `phase_4`, `phase_5`
 
 ```
-                push    rbp
-                push    rdi
-                sub     rsp, 1C8h
-                lea     rbp, [rsp+30h]
-                mov     rdi, rsp
-                mov     ecx, 72h ; 'r'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     rax, cs:__security_cookie
-                xor     rax, rbp
-                mov     [rbp+1A0h+var_18], rax
-                lea     rcx, unk_14002601D
-                call    j___CheckForDebuggerJustMyCode
                 cmp     cs:num_input_strings, 6
                 jnz     loc_7FF7D3D52D4D
                 mov     eax, 50h ; 'P'
@@ -1002,17 +842,6 @@ So, we must enter a string into a phase that took two integers as input and we h
 loc_7FF7D3D52D41:
                 lea     rcx, aCongratulation ; "Congratulations! You've defused the bom"...
                 call    j_printf
-loc_7FF7D3D52D4D:
-                lea     rcx, [rbp+1A0h+var_1D0]
-                lea     rdx, stru_14001C3A0 ; Fd
-                call    j__RTC_CheckStackVars
-                mov     rcx, [rbp+1A0h+var_18]
-                xor     rcx, rbp        ; StackCookie
-                call    j___security_check_cookie
-                lea     rsp, [rbp+198h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `three inputs: two integers and a string`
 
@@ -1048,16 +877,6 @@ And now we can enter the `secret_phase`...
 If we dig inside this phase, we'll see it calling function `func7`. And the input for this phase is an integer less than `1001` as we can see it calls `imp_atoi` that converts the string into integers. 
 
 ```
-                push    rbp
-                push    rdi
-                sub     rsp, 148h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 52h ; 'R'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                lea     rcx, unk_7FF7D3D6600A
-                call    j___CheckForDebuggerJustMyCode
                 call    j_read_line
                 mov     [rbp+130h+String], rax
                 mov     rcx, [rbp+130h+String] ; String
@@ -1077,32 +896,11 @@ loc_7FF7EADD28E4:
                 cmp     [rbp+130h+var_EC], 5
                 jz      short loc_7FF7EADD2901
                 call    j_explode_bomb
-loc_7FF7D3D52901:
-                lea     rcx, aWowYouVeDefuse ; "Wow! You've defused the secret stage!\n"
-                call    j_printf
-                call    j_phase_defused
-                lea     rsp, [rbp+128h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `secret_phase disassembly`
 so let's look at `func7` to see what kind of operations it does and try to figure out the input it deals with.....
 
 ```
-                mov     dword ptr [rsp-8+arg_8], edx
-                mov     [rsp-8+arg_0], rcx
-                push    rbp
-                push    rdi
-                sub     rsp, 0E8h
-                lea     rbp, [rsp+20h]
-                mov     rdi, rsp
-                mov     ecx, 3Ah ; ':'
-                mov     eax, 0CCCCCCCCh
-                rep stosd
-                mov     rcx, [rsp+0F0h+arg_8]
-                lea     rcx, unk_7FF7D3D6600A
-                call    j___CheckForDebuggerJustMyCode
                 cmp     [rbp+0D0h+arg_0], 0
                 jnz     short loc_7FF7EADD1E7B
                 mov     eax, 0FFFFFFFFh
@@ -1131,11 +929,6 @@ loc_7FF7EADD1EBF:                       ; CODE XREF: fun7+87↑j
                 mov     rcx, [rax+10h]
                 all    j_fun7
                 lea     eax, [rax+rax+1]
-loc_7FF7D3D51ED9:
-                lea     rsp, [rbp+0C8h]
-                pop     rdi
-                pop     rbp
-                retn
 ```
 * `func7 disassembly`
 
